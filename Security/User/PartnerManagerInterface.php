@@ -2,6 +2,8 @@
 
 namespace Stadline\WSSESecurityBundle\Security\User;
 
+use Stadline\WSSESecurityBundle\Entity\Partner;
+
 interface PartnerManagerInterface
 {
     /**

@@ -2,34 +2,41 @@
 
 namespace Stadline\WSSESecurityBundle\Security\User;
 
+use Stadline\WSSESecurityBundle\Entity\Partner;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 
+/**
+ * {@inheritDoc}
+ */
 class PartnerUserProvider implements UserProviderInterface
 {
     /**
-     * @var UserManagerInterface
+     * @var PartnerManagerInterface
      */
     protected $userManager;
-    
+
     /**
      * Constructor.
      *
-     * @param UserManagerInterface $userManager
+     * @param PartnerManagerInterface $userManager
      */
     public function __construct(PartnerManagerInterface $userManager)
     {
         $this->userManager = $userManager;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function loadUserByUsername($username)
     {
         try {
             $partner = $this->userManager->findByLogin($username);
-
-            $partnerUser = new PartnerUser($username, $partner->getSecret(), "salt", array($partner->getRole()));
+            /* @var $partner Partner*/
+            $partnerUser = new PartnerUser($username, $partner->getSecret(), 'salt', array($partner->getRole()));
             
             return $partnerUser;
             
@@ -38,6 +45,10 @@ class PartnerUserProvider implements UserProviderInterface
         }
     }
 
+    /**
+     * {@inheritDoc}
+     * @throws \Symfony\Component\Security\Core\Exception\UsernameNotFoundException
+     */
     public function refreshUser(UserInterface $user)
     {
         if (!$user instanceof PartnerUser) {
@@ -47,6 +58,9 @@ class PartnerUserProvider implements UserProviderInterface
         return $this->loadUserByUsername($user->getUsername());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function supportsClass($class)
     {
         return $class === 'Stadline\WSSESecurityBundle\Security\User\PartnerUser';

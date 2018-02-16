@@ -2,24 +2,20 @@
 
 namespace Stadline\WSSESecurityBundle\Security\Authentication\Token;
 
-use Stadline\WSSESecurityBundle\Security\User\AbstractProxyUser;
-use Stadline\WSSESecurityBundle\Security\User\RepairerProxyUser;
-use Stadline\WSSESecurityBundle\Security\User\SAVProxyUser;
 use Symfony\Component\Security\Core\Authentication\Token\AbstractToken;
-use Symfony\Component\Security\Core\Role\Role;
 
+/**
+ * {@inheritDoc}
+ */
 class WsseUserToken extends AbstractToken
 {
     public $created;
     public $digest;
     public $nonce;
-    
+
     /**
-     *
-     * @var AbstractProxyUser
+     * {@inheritDoc}
      */
-    public $proxyUser; 
-    
     public function __construct(array $roles = array())
     {
         parent::__construct($roles);
@@ -29,7 +25,10 @@ class WsseUserToken extends AbstractToken
             $this->setAuthenticated(true);
         }
     }
-    
+
+    /**
+     * {@inheritDoc}
+     */
     public function getCredentials()
     {
         return $this->getRoles();

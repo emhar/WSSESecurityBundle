@@ -7,9 +7,16 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+/**
+ * {@inheritDoc}
+ */
 class CreatePartnerCommand extends ContainerAwareCommand
 {
 
+    /**
+     * {@inheritDoc}
+     * @throws \Symfony\Component\Console\Exception\InvalidArgumentException
+     */
     protected function configure()
     {
         $this->setName('wsse:partner:create')
@@ -22,6 +29,13 @@ class CreatePartnerCommand extends ContainerAwareCommand
         ;
     }
 
+    /**
+     * {@inheritDoc}
+     * @throws \Symfony\Component\Console\Exception\InvalidArgumentException
+     * @throws \Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException
+     * @throws \LogicException
+     * @throws \Symfony\Component\DependencyInjection\Exception\ServiceCircularReferenceException
+     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $partnerManager = $this->getContainer()->get('stadline.wsse.partner_manager');
@@ -33,12 +47,12 @@ class CreatePartnerCommand extends ContainerAwareCommand
         $partner = $partnerManager->createNewPartner($name, $login, $role);
         
         if($partner) {
-            $output->writeln("New partner has been created : ");
-            $output->writeln("name : ".$name);
-            $output->writeln("login : ".$login);
-            $output->writeln("secret : ".$partner->getSecret(), OutputInterface::OUTPUT_PLAIN);
+            $output->writeln('New partner has been created : ');
+            $output->writeln('name : ' .$name);
+            $output->writeln('login : ' .$login);
+            $output->writeln('secret : ' .$partner->getSecret(), OutputInterface::OUTPUT_PLAIN);
         } else {
-            $output->writeln("Partner already exist");
+            $output->writeln('Partner already exist');
         }
         
     }

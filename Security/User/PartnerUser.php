@@ -4,6 +4,9 @@ namespace Stadline\WSSESecurityBundle\Security\User;
 
 use Symfony\Component\Security\Core\User\UserInterface;
 
+/**
+ * {@inheritDoc}
+ */
 class PartnerUser implements UserInterface
 {
     private $username;
@@ -18,27 +21,42 @@ class PartnerUser implements UserInterface
         $this->salt = $salt;
         $this->roles = $roles;
     }
-    
+
+    /**
+     * {@inheritDoc}
+     */
     public function getRoles()
     {
         return $this->roles;
     }
-    
+
+    /**
+     * {@inheritDoc}
+     */
     public function getPassword()
     {
         return $this->password;
     }
-    
+
+    /**
+     * {@inheritDoc}
+     */
     public function getSalt()
     {
         return $this->salt;
     }
-    
+
+    /**
+     * {@inheritDoc}
+     */
     public function getUsername()
     {
         return $this->username;
     }
-    
+
+    /**
+     * {@inheritDoc}
+     */
     public function eraseCredentials()
     {
     }

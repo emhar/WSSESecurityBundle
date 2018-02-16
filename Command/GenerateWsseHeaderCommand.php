@@ -12,10 +12,17 @@ use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
- 
+
+/**
+ * {@inheritDoc}
+ */
 class GenerateWsseHeaderCommand extends ContainerAwareCommand
 {
-    
+
+    /**
+     * {@inheritDoc}
+     * @throws \Symfony\Component\Console\Exception\InvalidArgumentException
+     */
     protected function configure()
     {
         $this->setName('wsse:wsse-generator')
@@ -29,7 +36,14 @@ class GenerateWsseHeaderCommand extends ContainerAwareCommand
                 'secret'
             );
     }
- 
+
+    /**
+     * {@inheritDoc}
+     * @throws \Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException
+     * @throws \Symfony\Component\Console\Exception\InvalidArgumentException
+     * @throws \LogicException
+     * @throws \Symfony\Component\DependencyInjection\Exception\ServiceCircularReferenceException
+     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $username = $input->getArgument('username');

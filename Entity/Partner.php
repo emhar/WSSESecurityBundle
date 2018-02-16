@@ -130,15 +130,15 @@ class Partner
 
     public function __toString()
     {
-        return $this->getName()?$this->getName():"";
+        return $this->getName()?$this->getName(): '';
     }
     
-    function getRole()
+    public function getRole()
     {
         return $this->role;
     }
 
-    function setRole($role)
+    public function setRole($role)
     {
         $this->role = $role;
     }

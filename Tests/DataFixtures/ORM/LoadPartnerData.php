@@ -6,9 +6,15 @@ use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use Stadline\WSSESecurityBundle\Entity\Partner;
 
+/**
+ * {@inheritDoc}
+ */
 class LoadPartnerData extends AbstractFixture
 {
 
+    /**
+     * {@inheritDoc}
+     */
     public function load(ObjectManager $manager)
     {
         

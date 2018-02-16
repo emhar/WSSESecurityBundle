@@ -64,16 +64,18 @@ class PartnerManager implements PartnerManagerInterface
         
         return $partner;
     }
-    
+
     /**
      * Renew the secret for a Login
-     * @param type $login
-     * @return type
+     * @param string $login
+     * @return Partner|null
+     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws \Doctrine\ORM\ORMInvalidArgumentException
      */
     public function renewSecret($login)
     {
         $partner = $this->getRepository()->findOneBy(array('login' => $login));
-        
+        /* @var $partner Partner */
         if($partner) {
             $secret = md5($partner->getLogin().$partner->getName().time());
 

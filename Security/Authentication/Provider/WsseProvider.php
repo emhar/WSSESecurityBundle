@@ -9,6 +9,9 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Core\Authentication\Provider\AuthenticationProviderInterface;
 
+/**
+ * {@inheritDoc}
+ */
 class WsseProvider implements AuthenticationProviderInterface
 {
     private $userProvider;
@@ -21,13 +24,17 @@ class WsseProvider implements AuthenticationProviderInterface
         $this->cacheDir = $cacheDir;
         $this->skipValidateDigest = $skipValidateDigest;
     }
-    
+
     /**
      * @param TokenInterface $token
      * @return \Symfony\Component\Security\Core\Authentication\Token\TokenInterface
+     * @throws \Symfony\Component\Security\Core\Exception\UsernameNotFoundException
+     * @throws \InvalidArgumentException
+     * @throws \Symfony\Component\Security\Core\Exception\AuthenticationException
      */
     public function authenticate(TokenInterface $token)
     {
+        /* @var $token WsseUserToken */
         $user = $this->userProvider->loadUserByUsername($token->getUsername());
         
         if ($user && $this->validateDigest($token->digest, $token->nonce, $token->created, $user->getPassword())) {
@@ -71,7 +78,10 @@ class WsseProvider implements AuthenticationProviderInterface
 
         return $digest === $expected;
     }
-    
+
+    /**
+     * {@inheritDoc}
+     */
     public function supports(TokenInterface $token)
     {
         return $token instanceof WsseUserToken;
