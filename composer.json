@@ -3,7 +3,7 @@
     "description": "Provide easy access to wsse provider",
     "require": {
         "doctrine/doctrine-bundle": "~1.0",
-        "symfony/security": "~2.2",
+        "symfony/security": "~2.2|3.*|4.*",
         "symfony/framework-bundle": "~2.3|3.*|4.*"
     },
     "authors": [
