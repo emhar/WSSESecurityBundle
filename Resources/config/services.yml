@@ -9,8 +9,8 @@ services:
         
     stadline.wsse.partner_manager:
         class: Stadline\WSSESecurityBundle\Manager\PartnerManager
-        arguments: ["@doctrine.orm.default_entity_manager"]
-        
+        arguments: ["@doctrine"]
+
     api.partner.user.provider:
         class: Stadline\WSSESecurityBundle\Security\User\PartnerUserProvider
         arguments: ["@stadline.wsse.partner_manager"]

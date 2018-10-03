@@ -2,6 +2,7 @@
 
 namespace Stadline\WSSESecurityBundle\Manager;
 
+use Doctrine\Bundle\DoctrineBundle\Registry;
 use Doctrine\ORM\EntityManager;
 use Exception;
 use Stadline\WSSESecurityBundle\Entity\Partner;
@@ -12,14 +13,14 @@ class PartnerManager implements PartnerManagerInterface
 {
 
     /**
-     * @var EntityManager
+     * @var Registry
      * 
      */
-    protected $em;
+    protected $doctrine;
 
-    public function __construct(EntityManager $em)
+    public function __construct(Registry $doctrine)
     {
-        $this->em = $em;
+        $this->doctrine = $doctrine;
     }
 
     /**
@@ -27,7 +28,7 @@ class PartnerManager implements PartnerManagerInterface
      */
     public function getRepository()
     {
-        return $this->em->getRepository('StadlineWSSESecurityBundle:Partner');
+        return $this->doctrine->getManager()->getRepository('StadlineWSSESecurityBundle:Partner');
     }
 
     /**
@@ -59,8 +60,8 @@ class PartnerManager implements PartnerManagerInterface
         $partner->setSecret($secret);
         $partner->setRole($role);
         
-        $this->em->persist($partner);
-        $this->em->flush();
+        $this->doctrine->getManager()->persist($partner);
+        $this->doctrine->getManager()->flush();
         
         return $partner;
     }
@@ -81,8 +82,8 @@ class PartnerManager implements PartnerManagerInterface
 
             $partner->setSecret($secret);
 
-            $this->em->persist($partner);
-            $this->em->flush();
+            $this->doctrine->getManager()->persist($partner);
+            $this->doctrine->getManager()->flush();
         }
         
         return $partner;
