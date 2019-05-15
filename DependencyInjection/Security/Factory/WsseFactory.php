@@ -1,8 +1,9 @@
-<?php 
+<?php
 
 namespace Stadline\WSSESecurityBundle\DependencyInjection\Security\Factory;
 
 use Symfony\Component\Config\Definition\Builder\NodeDefinition;
+use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\DefinitionDecorator;
@@ -21,17 +22,27 @@ class WsseFactory implements SecurityFactoryInterface
     public function create(ContainerBuilder $container, $id, $config, $userProvider, $defaultEntryPoint)
     {
         $providerId = 'security.authentication.provider.wsse.'.$id;
-        
-        $container
-            ->setDefinition($providerId, new DefinitionDecorator('wsse.security.authentication.provider'))
-            ->replaceArgument(0, new Reference($userProvider));
-        
+
+
         $listenerId = 'security.authentication.listener.wsse.'.$id;
-        $container->setDefinition(
-            $listenerId,
-            new DefinitionDecorator('wsse.security.authentication.listener')
-        );
-        
+        if(class_exists('Symfony\Component\DependencyInjection\DefinitionDecorator')){
+            $container
+                ->setDefinition($providerId, new DefinitionDecorator('wsse.security.authentication.provider'))
+                ->replaceArgument(0, new Reference($userProvider));
+            $container->setDefinition(
+                $listenerId,
+                new DefinitionDecorator('wsse.security.authentication.listener')
+            );
+        } else {
+            $container
+                ->setDefinition($providerId, new ChildDefinition('wsse.security.authentication.provider'))
+                ->replaceArgument(0, new Reference($userProvider));
+            $container->setDefinition(
+                $listenerId,
+                new ChildDefinition('wsse.security.authentication.listener')
+            );
+        }
+
         return array($providerId, $listenerId, $defaultEntryPoint);
     }
 
@@ -50,7 +61,7 @@ class WsseFactory implements SecurityFactoryInterface
     {
         return 'wsse';
     }
-    
+
     public function addConfiguration(NodeDefinition $node)
     {
     }
